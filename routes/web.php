@@ -1,7 +1,18 @@
 <?php
 
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Front\CartController;
+use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Front\FrontController;
+use App\Http\Controllers\Front\OrderController;
+use App\Http\Controllers\Front\OrderDetailController;
+use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +25,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::controller(FrontController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/shop', 'shop')->name('shop');
+    Route::get('/product/{id}', 'showProduct')->name('product.show');
+});
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.index');
 });
 
 Route::get('Home', function () {
@@ -27,17 +44,30 @@ Route::get('about', function () {
 Route::get('contact', function () {
     return view('frontend.contact');
 });
-Route::get('shop', function () {
-    return view('frontend.shop');
-});
+
 Route::get('single-product', function () {
     return view('frontend.single-product');
 });
+Route::get('index', function () {
+    return view('dashboard.index');
+});
+ROute::middleware(['auth'])->group(function () {
 
+    Route::controller(CartController::class)->prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', 'index')->name('show');
+        Route::get('/add/{id}', 'addToCartSession')->name('addToSession');
+    });
 
+    Route::controller(CheckoutController::class)->prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+    });
 
-
-
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('order/{status?}', [OrderDetailController::class, 'index'])->name('front.orders.index');
+    Route::get('order/{order}/show', [OrderDetailController::class, 'show'])->name('front.orders.show');
+});
 
 
 
@@ -55,3 +85,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/dashboard.php';
+

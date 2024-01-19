@@ -12,11 +12,14 @@
     <link rel="stylesheet" href="{{asset('frontend/assets/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/assets/css/templatemo.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/assets/css/custom.css')}}">
-
+     <link rel="stylesheet" href="{{ asset('node_modules/leaflet/dist/leaflet.css') }}" />
     <!-- Load fonts style after rendering the layout styles -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="{{asset('frontend/assets/css/fontawesome.min.css')}}">
+     <!--toaster--!>
+   <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery-confirm.min.css') }}">
     <!--
 
 TemplateMo 559 Zay Shop
